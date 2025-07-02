@@ -1,0 +1,4 @@
+# Ignore node_modules directory (git no track node_module file ...it is not neccessary to track this file)
+node_modules/  
+.env
+#Other entries
