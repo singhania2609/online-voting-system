@@ -71,7 +71,7 @@ router.post('/login', async(req, res) => {
         const user = await User.findOne({aadharCardNumber: aadharCardNumber, role: role});
 
         if (!user) {
-            return res.status(401).json({error: 'Invalid Aadhar Card Number or Role'});
+            return res.status(401).json({error: 'Invalid Role'});
         }
         if (!(await user.comparePassword(password))) {
             return res.status(401).json({error: 'Wrong password'});
