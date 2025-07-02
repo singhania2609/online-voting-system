@@ -3,6 +3,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
 
   const aadharCardNumber = document.getElementById('aadharCardNumber').value.trim();
   const password = document.getElementById('password').value.trim();
+  const role = document.getElementById('role').value;
   const message = document.getElementById('loginMessage');
 
   if (!/^\d{12}$/.test(aadharCardNumber)) {
@@ -16,7 +17,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ aadharCardNumber, password }),
+      body: JSON.stringify({ aadharCardNumber, password, role }),
     });
 
     const data = await response.json();

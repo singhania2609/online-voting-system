@@ -61,20 +61,20 @@ router.post('/signup', async (req, res) =>{
 // Login Route
 router.post('/login', async(req, res) => {
     try{
-        // Extract aadharCardNumber and password from request body
-        const {aadharCardNumber, password} = req.body;
+        // Extract aadharCardNumber, password, and role from request body
+        const {aadharCardNumber, password, role} = req.body;
 
-        // Check if aadharCardNumber or password is missing
-        if (!aadharCardNumber || !password) {
-            return res.status(400).json({ error: 'Aadhar Card Number and password are required' });
+        // Check if aadharCardNumber, password, or role is missing
+        if (!aadharCardNumber || !password || !role) {
+            return res.status(400).json({ error: 'Aadhar Card Number, password, and role are required' });
         }
 
-        // Find the user by aadharCardNumber
-        const user = await User.findOne({aadharCardNumber: aadharCardNumber});
+        // Find the user by aadharCardNumber and role
+        const user = await User.findOne({aadharCardNumber: aadharCardNumber, role: role});
 
         // If user does not exist or password does not match, return error
         if( !user || !(await user.comparePassword(password))){
-            return res.status(401).json({error: 'Invalid Aadhar Card Number or Password'});
+            return res.status(401).json({error: 'Invalid credentials or role'});
         }
 
         // generate Token 
@@ -83,7 +83,7 @@ router.post('/login', async(req, res) => {
         }
         const token = generateToken(payload);
 
-        // resturn token as response
+        // return token as response
         res.json({token})
     }catch(err){
         console.error(err);

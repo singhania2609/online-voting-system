@@ -8,6 +8,7 @@ document.getElementById("signupForm").addEventListener("submit", async function 
   const address = document.getElementById("address").value.trim();
   const aadharCardNumber = document.getElementById("aadharCardNumber").value.trim();
   const password = document.getElementById("password").value.trim();
+  const role = document.getElementById("role").value;
 
   if (!/^\d{12}$/.test(aadharCardNumber)) {
     alert("Aadhar number must be exactly 12 digits.");
@@ -37,6 +38,7 @@ document.getElementById("signupForm").addEventListener("submit", async function 
     address,
     aadharCardNumber,
     password,
+    role,
   };
 
   try {

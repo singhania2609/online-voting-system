@@ -25,8 +25,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('role').textContent = data.user.role;
       document.getElementById('isVoted').textContent = data.user.isVoted ? 'Yes' : 'No';
 
-      // Fetch and display candidates
-      await fetchCandidates(token, data.user.isVoted);
+      // Only show candidate list for non-admin users
+      if (data.user.role !== 'admin') {
+        document.getElementById('candidateSection').style.display = '';
+        await fetchCandidates(token, data.user.isVoted, data.user.role);
+      } else {
+        document.getElementById('candidateSection').style.display = 'none';
+      }
     } else {
       alert('Failed to load user profile.');
       localStorage.removeItem('token');
@@ -39,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Fetch and display the candidate list
-async function fetchCandidates(token, isVoted) {
+async function fetchCandidates(token, isVoted, userRole) {
   const candidateListDiv = document.getElementById('candidateList');
   try {
     const res = await fetch('/candidate');
@@ -52,8 +57,8 @@ async function fetchCandidates(token, isVoted) {
         div.className = 'candidate';
         // Show name, party, and vote count
         div.innerHTML = `<strong>${candidate.name}</strong> (${candidate.party}) - <span>Votes: ${candidate.voteCount ?? 0}</span>`;
-        // If user hasn't voted, show the vote button
-        if (!isVoted) {
+        // Only show the vote button if user is not admin and hasn't voted
+        if (userRole !== 'admin' && !isVoted) {
           const voteBtn = document.createElement('button');
           voteBtn.textContent = 'Vote';
           voteBtn.onclick = async () => {
@@ -92,3 +97,5 @@ function logout() {
   localStorage.removeItem('token');
   window.location.href = '/html/login.html';
 }
+
+
