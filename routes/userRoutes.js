@@ -61,10 +61,8 @@ router.post('/signup', async (req, res) =>{
 // Login Route
 router.post('/login', async(req, res) => {
     try{
-        // Extract aadharCardNumber, password, and role from request body
         const {aadharCardNumber, password, role} = req.body;
 
-        // Check if aadharCardNumber, password, or role is missing
         if (!aadharCardNumber || !password || !role) {
             return res.status(400).json({ error: 'Aadhar Card Number, password, and role are required' });
         }
@@ -72,19 +70,16 @@ router.post('/login', async(req, res) => {
         // Find the user by aadharCardNumber and role
         const user = await User.findOne({aadharCardNumber: aadharCardNumber, role: role});
 
-        // If user does not exist or password does not match, return error
-        if( !user || !(await user.comparePassword(password))){
-            return res.status(401).json({error: 'Invalid credentials or role'});
+        if (!user) {
+            return res.status(401).json({error: 'Invalid Aadhar Card Number or Role'});
+        }
+        if (!(await user.comparePassword(password))) {
+            return res.status(401).json({error: 'Wrong password'});
         }
 
-        // generate Token 
-        const payload = {
-            id: user.id,
-        }
+        const payload = { id: user.id };
         const token = generateToken(payload);
-
-        // return token as response
-        res.json({token})
+        res.json({token});
     }catch(err){
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -108,7 +103,7 @@ router.get('/profile', jwtAuthMiddleware, async (req, res) => {
 //User can change password 
 router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
     try {
-        const userId = req.user; // Extract the id from the token
+        const userId = req.user.id; // Extract the id from the token
         const { currentPassword, newPassword } = req.body; // Extract current and new passwords from request body
 
         // Check if currentPassword and newPassword are present in the request body

@@ -23,6 +23,16 @@
       <div id="candidateList">Loading candidates...</div>
     </div>
     <button onclick="logout()">Logout</button>
+    <button id="showChangePasswordBtn" style="margin-left: 12px;">Change Password</button>
+
+    <div id="changePasswordSection" style="display:none; margin-top: 18px;">
+      <form id="changePasswordForm">
+        <input type="password" id="currentPassword" placeholder="Current Password" required />
+        <input type="password" id="newPassword" placeholder="New Password" required />
+        <button type="submit">Update Password</button>
+        <p id="changePasswordMessage"></p>
+      </form>
+    </div>
     <a href="/html/index.html" class="back-button">⬅️ Back to Home</a>
   </div>
   <script src="/js/dashboard.js"></script>

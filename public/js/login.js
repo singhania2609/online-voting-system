@@ -31,10 +31,21 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         window.location.href = '/html/dashboard.htm';
       }, 1500);
     } else {
+      message.style.color = 'red';
       message.textContent = data.error || 'Login failed.';
     }
   } catch (err) {
     console.error('Error during login:', err);
     message.textContent = 'Server error. Please try again.';
+  }
+});
+
+// Clear error message on input
+['aadharCardNumber', 'password', 'role'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', () => {
+      message.textContent = '';
+    });
   }
 });

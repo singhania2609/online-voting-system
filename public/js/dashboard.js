@@ -107,4 +107,54 @@ function logout() {
   window.location.href = '/html/login.html';
 }
 
+// Show/hide change password form
+const showChangePasswordBtn = document.getElementById('showChangePasswordBtn');
+if (showChangePasswordBtn) {
+  showChangePasswordBtn.onclick = function() {
+    const section = document.getElementById('changePasswordSection');
+    section.style.display = section.style.display === 'none' ? '' : 'none';
+  };
+}
+
+// Handle password change form submission
+const changePasswordForm = document.getElementById('changePasswordForm');
+if (changePasswordForm) {
+  changePasswordForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const message = document.getElementById('changePasswordMessage');
+
+    if (newPassword.length < 6) {
+      message.style.color = 'red';
+      message.textContent = 'New password must be at least 6 characters.';
+      return;
+    }
+
+    try {
+      const res = await fetch('/user/profile/password', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        message.style.color = 'green';
+        message.textContent = 'Password updated successfully!';
+        this.reset();
+      } else {
+        message.style.color = 'red';
+        message.textContent = data.error || 'Failed to update password.';
+      }
+    } catch (err) {
+      message.style.color = 'red';
+      message.textContent = 'Server error. Please try again.';
+    }
+  });
+}
+
 
