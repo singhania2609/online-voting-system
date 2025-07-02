@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Candidate</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Add Candidate</h1>
+    <form id="addCandidateForm">
+      <input type="text" id="name" placeholder="Candidate Name" required />
+      <input type="number" id="age" placeholder="Age" required />
+      <input type="text" id="party" placeholder="Party" required />
+      <input type="text" id="Area_Standing_election" placeholder="Area Standing Election" required />
+      <input type="text" id="address" placeholder="Address" required />
+      <input type="text" id="aadharCardNumber" placeholder="Aadhar Card Number" maxlength="12" required />
+      <input type="email" id="email" placeholder="Email (optional)" />
+      <input type="text" id="mobile" placeholder="Mobile Number (optional)" />
+      <button type="submit">Add Candidate</button>
+      <p id="addCandidateMessage"></p>
+    </form>
+    <a href="/html/dashboard.htm" class="back-button">⬅️ Back to Dashboard</a>
+  </div>
+  <script src="/js/add_candidate.js"></script>
+</body>
+</html> 

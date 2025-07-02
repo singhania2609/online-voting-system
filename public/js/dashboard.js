@@ -25,12 +25,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('role').textContent = data.user.role;
       document.getElementById('isVoted').textContent = data.user.isVoted ? 'Yes' : 'No';
 
-      // Only show candidate list for non-admin users
-      if (data.user.role !== 'admin') {
+      // Show candidate list for both admin and voter, and add button for admin
+      if (data.user.role === 'admin') {
+        // Show add candidate button for admin
+        const adminActionsDiv = document.getElementById('adminActions');
+        adminActionsDiv.style.display = '';
+        adminActionsDiv.innerHTML = '<a href="/html/add_candidate.html" class="add-candidate-btn">+ Add Candidate</a>';
+        // Also show candidate list for admin
         document.getElementById('candidateSection').style.display = '';
         await fetchCandidates(token, data.user.isVoted, data.user.role);
       } else {
-        document.getElementById('candidateSection').style.display = 'none';
+        document.getElementById('candidateSection').style.display = '';
+        document.getElementById('adminActions').style.display = 'none';
+        await fetchCandidates(token, data.user.isVoted, data.user.role);
       }
     } else {
       alert('Failed to load user profile.');
