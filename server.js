@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const bodyParser = require('body-parser'); 
 app.use(bodyParser.json()); // req.body
+
+
 const PORT = process.env.PORT || 3000;
 
 
@@ -18,9 +20,15 @@ app.use('/user',userRoutes);
 app.use('/candidate',candidatRoutes);
 
 
+const path = require('path');
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/html/index.html'));
+});
+
+
 
 // Start the server
 //const PORT = 3000;
 app.listen(PORT,()=>{
     console.log('Listening on port 3000');
-});
+}); 

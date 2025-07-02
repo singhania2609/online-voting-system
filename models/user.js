@@ -12,11 +12,15 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    email:{
-        type:String
+    email: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email format']
     },
     mobile: {
-        type:String
+    type: String,
+    match: [/^\d{10}$/, 'Mobile number must be 10 digits']
     },
     address: {
         type: String,

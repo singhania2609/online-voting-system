@@ -15,20 +15,26 @@ router.post('/signup', async (req, res) =>{
                 return res.status(400).json({ error: 'Admin already exists' });
             }
         }
-        if(data.age<18){
-            return res.status(403).json({message: 'user age must greater or eqaul to 18'})
+        if (!data.name) return res.status(400).json({ message: 'Name is required' });
+        if (!data.age || data.age < 18) return res.status(400).json({ message: 'Age must be at least 18' });
+        if (!data.address) return res.status(400).json({ message: 'Address is required' });
+        if (!data.password || data.password.length < 6) return res.status(400).json({ message: 'Password must be at least 6 characters' });
+        if (!data.aadharCardNumber || !/^\d{12}$/.test(data.aadharCardNumber)) {
+                    return res.status(400).json({ message: 'Aadhar Card Number must be exactly 12 digits' });
         }
-        // Validate Aadhar Card Number must have exactly 12 digit
-        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
-            return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
+        if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) {
+            return res.status(400).json({ message: 'Invalid email address' });
+        }
+        if (data.mobile && !/^\d{10}$/.test(data.mobile)) {
+            return res.status(400).json({ message: 'Mobile number must be exactly 10 digits' });
         }
 
-        // Check if a user with the same Aadhar Card Number already exists
+
+        // Check if a candidate with the same Aadhar Card Number already exists
         const existingUser = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
         if (existingUser) {
-            return res.status(400).json({ error: 'User with the same Aadhar Card Number already exists' });
+            return res.status(400).json({message: 'User with the same Aadhar Card Number already exists' });
         }
-
 
         // Create a new User document using the Mongoose model
         const newUser = new User(data);
@@ -50,6 +56,7 @@ router.post('/signup', async (req, res) =>{
         res.status(500).json({error: 'Internal Server Error'});
     }
 })
+
 
 // Login Route
 router.post('/login', async(req, res) => {
@@ -115,6 +122,10 @@ router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
         // If user does not exist or password does not match, return error
         if (!user || !(await user.comparePassword(currentPassword))) {
             return res.status(401).json({ error: 'Invalid current password' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'New password must be at least 6 characters long' });
         }
 
         // Update the user's password

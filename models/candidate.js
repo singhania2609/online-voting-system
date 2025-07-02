@@ -6,16 +6,27 @@ const candidateSchema = new mongoose.Schema({
         type: String,
         required: true //fixed
     },
-    party: {
-        type: String,
-        required: true
-    },
     age: {
         type: Number,
         required: true
     },
-     mobile: {
-        type:String
+    party: {
+        type: String,
+        required: true
+    },
+    Area_Standing_election: {
+        type:String,
+        require:true
+    },
+    email: {
+    type: String,
+    trim: true,
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, 'Invalid email format']
+    },
+    mobile: {
+    type: String,
+    match: [/^\d{10}$/, 'Mobile number must be 10 digits']
     },
     aadharCardNumber: {
         type: Number,

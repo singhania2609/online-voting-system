@@ -25,21 +25,25 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
         
        
         const data = req.body // Assuming the request body contains the candidate data
-
-         if(data.age<25){
-            return res.status(403).json({message: 'candidate must greater than or eqaul to 25'})
+        if (!data.name) return res.status(400).json({ message: 'Name is required' });
+        if (!data.age || data.age < 18) return res.status(400).json({ message: 'Age must be at least 18' });
+        if (!data.party) return res.status(400).json({ message: 'Party Name is required' });
+        if (!data.Area_Standing_election) return res.status(400).json({ message: 'Area Name is required, where we have standing for election' });
+        if (!data.address) return res.status(400).json({ message: 'Address is required' });
+        if (!data.aadharCardNumber || !/^\d{12}$/.test(data.aadharCardNumber)) {
+                    return res.status(400).json({ message: 'Aadhar Card Number must be exactly 12 digits' });
         }
-
-        
-        // Validate Aadhar Card Number must have exactly 12 digit
-        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
-            return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
+        if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) {
+            return res.status(400).json({ message: 'Invalid email address' });
+        }
+        if (data.mobile && !/^\d{10}$/.test(data.mobile)) {
+            return res.status(400).json({ message: 'Mobile number must be exactly 10 digits' });
         }
         
-        // Check if a candidate with the same Aadhar Card Number already exists
-        const existingCandidate = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        
+        const existingCandidate = await Candidate.findOne({ aadharCardNumber: data.aadharCardNumber });
         if (existingCandidate) {
-            return res.status(400).json({ error: 'Candidate with the same Aadhar Card Number already exists' });
+            return res.status(400).json({ message: 'Candidate with the same Aadhar Card Number already exists' });
         }
 
 
