@@ -27,11 +27,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Show candidate list for both admin and voter, and add button for admin
       if (data.user.role === 'admin') {
-        // Show add candidate button for admin
+        // Show add and delete candidate buttons for admin
         const adminActionsDiv = document.getElementById('adminActions');
         adminActionsDiv.style.display = '';
-        adminActionsDiv.innerHTML = '<a href="/html/add_candidate.html" class="add-candidate-btn">+ Add Candidate</a>';
-        // Also show candidate list for admin
+        adminActionsDiv.innerHTML = `
+          <a href="/html/add_candidate.html" class="add-candidate-btn">+ Add Candidate</a>
+          <a href="/html/delete_candidate.html" class="delete-candidate-btn" style="margin-left:12px;background:#dc3545;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">+ Delete Candidate</a>
+        `;
         document.getElementById('candidateSection').style.display = '';
         await fetchCandidates(token, data.user.isVoted, data.user.role);
       } else {
