@@ -1,0 +1,50 @@
+/* Add nice spacing and style for the result list */
+#candidateList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#candidateList li.candidate-result {
+  background: #f8f8f8;
+  margin-bottom: 10px;
+  padding: 12px 18px;
+  border-radius: 6px;
+  font-size: 1.1em;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+}
+
+#candidateSection h2 {
+  margin-bottom: 16px;
+}
+
+#candidateTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+#candidateTable th, #candidateTable td {
+  padding: 14px 18px;
+  text-align: left;
+}
+
+#candidateTable th {
+  background: #f5f5f5;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+#candidateTable tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+#candidateTable tr:hover {
+  background: #e6f7ff;
+} 

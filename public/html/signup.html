@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup - Online Voting System</title>
+  <link rel="stylesheet" href="/css/signup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="signup-container">
+    <form class="signup-card" id="signupForm">
+      <h2>📝 Signup</h2>
+      <p>Create your voter account</p>
+
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="number" id="age" placeholder="Age" required />
+      <input type="email" id="email" placeholder="Email (optional)" />
+      <input type="text" id="mobile" placeholder="Mobile Number (optional)" />
+      <input type="text" id="address" placeholder="Address" required />
+      <input type="text" id="aadharCardNumber" placeholder="Aadhar Card Number" maxlength="12" required />
+      <input type="password" id="password" placeholder="Password" required />
+
+      <button type="submit">Signup</button>
+
+      <p class="redirect">Already have an account? <a href="/html/login.html">Login</a></p>
+    </form>
+  </div>
+
+  <script src="/js/signup.js"></script>
+</body>
+</html>

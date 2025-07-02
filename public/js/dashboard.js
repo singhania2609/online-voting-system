@@ -1,0 +1,94 @@
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    window.location.href = '/html/login.html';
+    return;
+  }
+
+  try {
+    // Fetch user profile
+    const response = await fetch('/user/profile', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.user) {
+      document.getElementById('name').textContent = data.user.name;
+      document.getElementById('age').textContent = data.user.age;
+      document.getElementById('email').textContent = data.user.email || 'N/A';
+      document.getElementById('mobile').textContent = data.user.mobile || 'N/A';
+      document.getElementById('role').textContent = data.user.role;
+      document.getElementById('isVoted').textContent = data.user.isVoted ? 'Yes' : 'No';
+
+      // Fetch and display candidates
+      await fetchCandidates(token, data.user.isVoted);
+    } else {
+      alert('Failed to load user profile.');
+      localStorage.removeItem('token');
+      window.location.href = '/html/login.html';
+    }
+  } catch (err) {
+    console.error('Fetch error:', err);
+    alert('Server error. Please try again later.');
+  }
+});
+
+// Fetch and display the candidate list
+async function fetchCandidates(token, isVoted) {
+  const candidateListDiv = document.getElementById('candidateList');
+  try {
+    const res = await fetch('/candidate');
+    if (!res.ok) throw new Error('Failed to fetch candidates');
+    const candidates = await res.json();
+    if (Array.isArray(candidates) && candidates.length > 0) {
+      candidateListDiv.innerHTML = '';
+      candidates.forEach(candidate => {
+        const div = document.createElement('div');
+        div.className = 'candidate';
+        // Show name, party, and vote count
+        div.innerHTML = `<strong>${candidate.name}</strong> (${candidate.party}) - <span>Votes: ${candidate.voteCount ?? 0}</span>`;
+        // If user hasn't voted, show the vote button
+        if (!isVoted) {
+          const voteBtn = document.createElement('button');
+          voteBtn.textContent = 'Vote';
+          voteBtn.onclick = async () => {
+            try {
+              const voteRes = await fetch(`/candidate/vote/${candidate._id}`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              });
+              const voteData = await voteRes.json();
+              if (voteRes.ok) {
+                alert('Vote recorded successfully!');
+                window.location.reload();
+              } else {
+                alert(voteData.message || 'Failed to vote.');
+              }
+            } catch (err) {
+              alert('Server error. Please try again.');
+            }
+          };
+          div.appendChild(voteBtn);
+        }
+        candidateListDiv.appendChild(div);
+      });
+    } else {
+      candidateListDiv.textContent = 'No candidates available.';
+    }
+  } catch (err) {
+    candidateListDiv.textContent = 'Failed to load candidates.';
+  }
+}
+
+// Logout function
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/html/login.html';
+}
