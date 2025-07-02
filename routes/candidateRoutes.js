@@ -23,8 +23,12 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
         if(!(await chechkAdminRole(req.user.id)))
             return res.status(403).json({message:'user does not have admin role'});
         
-
+       
         const data = req.body // Assuming the request body contains the candidate data
+
+         if(data.age<25){
+            return res.status(403).json({message: 'candidate must greater than or eqaul to 25'})
+        }
 
         
         // Validate Aadhar Card Number must have exactly 12 digit

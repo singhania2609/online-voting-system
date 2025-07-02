@@ -15,7 +15,9 @@ router.post('/signup', async (req, res) =>{
                 return res.status(400).json({ error: 'Admin already exists' });
             }
         }
-
+        if(data.age<18){
+            return res.status(403).json({message: 'user age must greater or eqaul to 18'})
+        }
         // Validate Aadhar Card Number must have exactly 12 digit
         if (!/^\d{12}$/.test(data.aadharCardNumber)) {
             return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
