@@ -5,72 +5,105 @@
 }
 
 body, html {
-  height: 100%;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* Remove height: 100%; and flex centering for scrollable content */
+  /* height: 100%; */
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%);
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .signup-container {
   width: 100%;
-  max-width: 450px;
-  padding: 20px;
+  max-width: 500px;
+  padding: 28px 0;
+  margin: 48px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .signup-card {
-  background: #ffffffd9;
-  padding: 35px 30px;
-  border-radius: 16px;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(6px);
+  background: #ffffffee;
+  padding: 38px 32px 32px 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  backdrop-filter: blur(8px);
   text-align: center;
+  width: 100%;
+  border: 1.5px solid #e3e6f0;
+  animation: fadeIn 0.7s ease;
 }
 
 .signup-card h2 {
   margin-bottom: 10px;
   color: #333;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 1.6em;
 }
 
 .signup-card p {
-  font-size: 14px;
+  font-size: 15px;
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .signup-card input {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 8px;
-  background: #f0f0f0;
+  padding: 13px 12px;
+  margin-bottom: 16px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 9px;
+  background: #f7f8fa;
   font-size: 15px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.signup-card input:focus {
+  border: 1.5px solid #7f7fd5;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(127,127,213,0.08);
 }
 
 .signup-card button {
   width: 100%;
-  padding: 12px;
-  background-color: #28a745;
+  padding: 13px;
+  background: linear-gradient(90deg, #7f7fd5 0%, #86a8e7 100%);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
+  font-size: 1.1em;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(127,127,213,0.08);
+  margin-top: 6px;
 }
-
 .signup-card button:hover {
-  background-color: #218838;
+  background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+  box-shadow: 0 4px 16px rgba(127,127,213,0.13);
 }
 
 .redirect {
-  margin-top: 15px;
-  font-size: 14px;
+  margin-top: 18px;
+  font-size: 15px;
 }
 
 .redirect a {
   color: #007bff;
   text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.redirect a:hover {
+  color: #0056b3;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }

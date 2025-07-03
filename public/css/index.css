@@ -6,63 +6,93 @@
 }
 
 body, html {
-  height: 100%;
+  /* Remove height: 100% and flex centering for scrollable content */
+  /* height: 100%; */
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #74ebd5, #9face6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, rgba(255,255,255,0.12) 0%, rgba(127,127,213,0.10) 100%);
+  z-index: 0;
 }
 
 /* Container */
 .main-container {
   width: 100%;
-  max-width: 500px;
-  padding: 20px;
+  max-width: 600px;
+  padding: 32px 0;
+  margin: 60px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .card {
-  background: #ffffffcc;
-  padding: 40px 30px;
-  border-radius: 16px;
+  background: #ffffffee;
+  padding: 48px 36px 38px 36px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.13);
+  backdrop-filter: blur(12px);
+  border: 2px solid #e3e6f0;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.card:hover {
+  box-shadow: 0 20px 48px rgba(0,0,0,0.18);
+  border: 2px solid #74ebd5;
 }
 
 /* Heading */
 .card h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #2c3e50;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 /* Greeting */
 #greeting {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 34px;
+  font-weight: 500;
 }
 
 /* Button Group */
 .button-group {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
 .btn {
   text-decoration: none;
-  padding: 12px 20px;
-  background-color: #007bff;
+  padding: 14px 24px;
+  background: linear-gradient(90deg, #007bff 0%, #74ebd5 100%);
   color: white;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.3);
+  font-weight: 700;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(.4,2,.3,1);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.18);
+  font-size: 1.08em;
+  border: none;
+  outline: none;
+  letter-spacing: 0.5px;
 }
 
 .btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+  background: linear-gradient(90deg, #0056b3 0%, #9face6 100%);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 123, 255, 0.22);
 }

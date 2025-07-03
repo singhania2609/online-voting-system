@@ -26,6 +26,8 @@ const candidatRoutes = require('./routes/candidateRoutes');
 app.use('/user',userRoutes);
 app.use('/candidate',candidatRoutes);
 
+app.use('/uploads', express.static('uploads'));
+
 
 
 

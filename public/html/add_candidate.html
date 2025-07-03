@@ -9,14 +9,18 @@
   <div class="container">
     <h1>Add Candidate</h1>
     <form id="addCandidateForm">
-      <input type="text" id="name" placeholder="Candidate Name" required />
-      <input type="number" id="age" placeholder="Age" required />
-      <input type="text" id="party" placeholder="Party" required />
-      <input type="text" id="Area_Standing_election" placeholder="Area Standing Election" required />
-      <input type="text" id="address" placeholder="Address" required />
-      <input type="text" id="aadharCardNumber" placeholder="Aadhar Card Number" maxlength="12" required />
-      <input type="email" id="email" placeholder="Email (optional)" />
-      <input type="text" id="mobile" placeholder="Mobile Number (optional)" />
+      <input type="text" id="name" name="name" placeholder="Candidate Name" required />
+      <input type="number" id="age" name="age" placeholder="Age" required />
+      <input type="text" id="party" name="party" placeholder="Party" required />
+      <input type="text" id="Area_Standing_election" name="Area_Standing_election" placeholder="Area Standing Election" required />
+      <input type="text" id="address" name="address" placeholder="Address" required />
+      <input type="text" id="aadharCardNumber" name="aadharCardNumber" placeholder="Aadhar Card Number" maxlength="12" required />
+      <input type="email" id="email" name="email" placeholder="Email (optional)" />
+      <input type="text" id="mobile" name="mobile" placeholder="Mobile Number (optional)" />
+      <label for="candidateImage">Candidate Image:</label>
+      <input type="file" id="candidateImage" name="candidateImage" accept="image/*" required>
+      <label for="partySymbol">Party Symbol:</label>
+      <input type="file" id="partySymbol" name="partySymbol" accept="image/*" required>
       <button type="submit">Add Candidate</button>
       <p id="addCandidateMessage"></p>
     </form>

@@ -33,17 +33,22 @@ const upload = multer({ storage });
 
 
 // POST route to add candidate ->only admin add candidate
-router.post('/', jwtAuthMiddleware,upload.single('photo'), async (req, res) =>{
+router.post('/', jwtAuthMiddleware, upload.fields([
+  { name: 'candidateImage', maxCount: 1 },
+  { name: 'partySymbol', maxCount: 1 }
+]), async (req, res) =>{
     try{
         if(!(await chechkAdminRole(req.user.id)))
             return res.status(403).json({message:'user does not have admin role'});
         
-       
         const data = req.body // Assuming the request body contains the candidate data
 
-          // Save uploaded photo filename if provided
-        if (req.file) {
-            data.photo = req.file.buffer.toString('base64');
+        // Save uploaded candidate image and party symbol if provided
+        if (req.files && req.files.candidateImage) {
+            data.candidateImage = req.files.candidateImage[0].buffer.toString('base64');
+        }
+        if (req.files && req.files.partySymbol) {
+            data.partySymbol = req.files.partySymbol[0].buffer.toString('base64');
         }
 
         if (!data.name) return res.status(400).json({ message: 'Name is required' });
@@ -51,8 +56,8 @@ router.post('/', jwtAuthMiddleware,upload.single('photo'), async (req, res) =>{
         if (!data.party) return res.status(400).json({ message: 'Party Name is required' });
         if (!data.Area_Standing_election) return res.status(400).json({ message: 'Area Name is required, where we have standing for election' });
         if (!data.address) return res.status(400).json({ message: 'Address is required' });
-        if (!data.aadharCardNumber || !/^\d{12}$/.test(data.aadharCardNumber)) {
-                    return res.status(400).json({ message: 'Aadhar Card Number must be exactly 12 digits' });
+        if (!data.aadharCardNumber || !/^[0-9]{12}$/.test(data.aadharCardNumber)) {
+            return res.status(400).json({ message: 'Aadhar Card Number must be exactly 12 digits' });
         }
         if (data.email && !/^\S+@\S+\.\S+$/.test(data.email)) {
             return res.status(400).json({ message: 'Invalid email address' });
@@ -61,14 +66,12 @@ router.post('/', jwtAuthMiddleware,upload.single('photo'), async (req, res) =>{
             return res.status(400).json({ message: 'Mobile number must be exactly 10 digits' });
         }
         
-        
         const existingCandidate = await Candidate.findOne({ aadharCardNumber: data.aadharCardNumber });
         if (existingCandidate) {
             return res.status(400).json({ message: 'Candidate with the same Aadhar Card Number already exists' });
         }
 
-
-        // Create a new User document using the Mongoose model
+        // Create a new Candidate document using the Mongoose model
         const newCandidates = new Candidate(data);
 
         // Save the new candidate to the database
@@ -202,7 +205,7 @@ router.get('/vote/count',async (req,res)=>{
 router.get('/',async(req,res)=>{
     try{
         //Find all candidates in the collection
-        const candidates = await Candidate.find({}, 'name party voteCount _id age Area_Standing_election address aadharCardNumber email mobile');
+        const candidates = await Candidate.find({}, 'name party voteCount _id age Area_Standing_election address aadharCardNumber email mobile candidateImage partySymbol');
 
         //Return the list as response
         res.status(200).json(candidates);

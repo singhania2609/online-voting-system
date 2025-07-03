@@ -8,10 +8,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     tableBody.innerHTML = '';
     if (Array.isArray(data) && data.length > 0) {
       data.forEach((candidate) => {
+        const candidateImg = candidate.candidateImage
+          ? `<img src='data:image/png;base64,${candidate.candidateImage}' alt='Candidate' style='width:40px;height:40px;border-radius:50%;object-fit:cover;'>`
+          : `<img src='/public/image/default.png' alt='Candidate' style='width:40px;height:40px;border-radius:50%;object-fit:cover;'>`;
+        const partyImg = candidate.partySymbol
+          ? `<img src='data:image/png;base64,${candidate.partySymbol}' alt='Party Symbol' style='width:32px;height:32px;object-fit:contain;'>`
+          : `<img src='/public/image/default-party.png' alt='Party Symbol' style='width:32px;height:32px;object-fit:contain;'>`;
         const tr = document.createElement("tr");
         tr.innerHTML = `
+          <td>${candidateImg}</td>
           <td>${candidate.name ?? '(no name)'}</td>
           <td>${candidate.party ?? '(no party)'}</td>
+          <td>${partyImg}</td>
           <td>${candidate.Area_Standing_election ?? '(no area)'}</td>
           <td>${candidate.voteCount ?? 0}</td>
         `;

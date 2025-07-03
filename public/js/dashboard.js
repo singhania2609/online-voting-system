@@ -50,6 +50,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('adminActions').style.display = 'none';
         await fetchCandidates(token, data.user.isVoted, data.user.role);
       }
+
+      // Show profile image from base64 if available
+      if (data.user.photo) {
+        document.getElementById('profileImage').src = 'data:image/png;base64,' + data.user.photo;
+      } else {
+        document.getElementById('profileImage').src = '/public/image/default.png'; // fallback image
+      }
     } else {
       alert('Failed to load user profile.');
       localStorage.removeItem('token');
@@ -73,9 +80,32 @@ async function fetchCandidates(token, isVoted, userRole) {
       candidates.forEach(candidate => {
         const div = document.createElement('div');
         div.className = 'candidate';
-        // Show name, party, and vote count
-        div.innerHTML = `<strong>${candidate.name}</strong> (${candidate.party}) - <span>Votes: ${candidate.voteCount ?? 0}</span>`;
-        
+
+        // Always show candidate image and party symbol, use fallback if missing
+        let candidateImg = candidate.candidateImage
+          ? `<img src='data:image/png;base64,${candidate.candidateImage}' alt='Candidate' class='candidate-img'>`
+          : `<img src='/public/image/default.png' alt='Candidate' class='candidate-img'>`;
+        let partyImg = candidate.partySymbol
+          ? `<img src='data:image/png;base64,${candidate.partySymbol}' alt='Party Symbol' class='party-img'>`
+          : `<img src='/public/image/default-party.png' alt='Party Symbol' class='party-img'>`;
+
+        div.innerHTML = `
+          <div style='display: flex; align-items: center; width: 100%; gap: 16px;'>
+            <div style='display: flex; align-items: center; gap: 8px;'>
+              <span style='font-size: 0.95em; color: #888;'>Candidate</span>
+              ${candidateImg}
+            </div>
+            <div class='candidate-info' style='flex:1; min-width:0; display: flex; align-items: center; gap: 10px;'>
+              <strong>${candidate.name}</strong> (${candidate.party})
+              <div style='display: flex; align-items: center; gap: 8px; margin-left: 14px;'>
+                <span style='font-size: 0.95em; color: #888;'>Party Symbol</span>
+                ${partyImg}
+              </div>
+              <span>Votes: ${candidate.voteCount ?? 0}</span>
+            </div>
+          </div>
+        `;
+
         // Only show the vote button if user is not admin and hasn't voted
         if (userRole !== 'admin' && !isVoted) {
           const voteBtn = document.createElement('button');

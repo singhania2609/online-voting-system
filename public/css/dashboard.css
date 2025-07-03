@@ -1,18 +1,18 @@
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  background-color: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 32px 28px 28px 28px;
 }
 
 h1 {
@@ -20,24 +20,165 @@ h1 {
   color: #333;
 }
 
-#userInfo p {
-  font-size: 16px;
-  margin: 10px 0;
-  color: #555;
+#userInfo {
+  margin-bottom: 18px;
+  font-size: 1.08em;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
+#adminActions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+#adminActions a {
+  font-size: 1em;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s;
+}
+
+#adminActions .add-candidate-btn {
+  background: #28a745;
+  color: #fff;
+}
+#adminActions .update-candidate-btn {
+  background: #007bff;
+  color: #fff;
+}
+#adminActions .delete-candidate-btn {
+  background: #dc3545;
+  color: #fff;
+}
+
+#candidateSection {
+  margin-top: 18px;
+}
+#candidateSection h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  color: #007bff;
+  font-size: 1.3em;
+  letter-spacing: 1px;
+}
+
+.candidate {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 14px 20px;
+  margin-bottom: 18px;
+  gap: 16px;
+  min-height: 60px;
+  overflow: hidden;
+}
+.candidate .candidate-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+.candidate .party-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: #fff;
+  margin-left: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+.candidate .candidate-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 10px;
+}
+.candidate strong {
+  font-size: 1.13em;
+  margin-right: 8px;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.candidate span {
+  margin-left: auto;
+  font-weight: 600;
+  color: #007bff;
+  font-size: 1.08em;
+}
+.candidate button {
+  margin-left: 18px;
+  padding: 7px 16px;
   border-radius: 6px;
-  margin-top: 20px;
-  font-size: 16px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
+}
+.candidate button:hover {
+  background: #0056b3;
 }
 
-button:hover {
-  background-color: #c82333;
+.back-button {
+  display: inline-block;
+  margin-top: 24px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1.08em;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.back-button:hover {
+  color: #0056b3;
+}
+
+button, .back-button {
+  outline: none;
+}
+
+/* Profile image at top */
+#profileImage {
+  margin-bottom: 10px;
+  border: 3px solid #007bff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 12px 4px;
+  }
+  .candidate {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 8px;
+  }
+  .candidate .candidate-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .candidate .party-img {
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  #adminActions {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

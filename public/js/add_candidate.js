@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle add candidate form submission
   document.getElementById('addCandidateForm').addEventListener('submit', async function (e) {
     e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(document.getElementById('addCandidateForm'));
 
     const token = localStorage.getItem('token');
     const name = document.getElementById('name').value.trim();
@@ -27,13 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const response = await fetch('/candidate', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(candidateData)
+        body: formData
       });
 
-      const data = await response.json();
+      const result = await response.json();
       if (response.ok) {
         message.style.color = 'green';
         message.textContent = 'Candidate added successfully!';
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchCandidateList();
       } else {
         message.style.color = 'red';
-        message.textContent = data.message || data.error || 'Failed to add candidate.';
+        message.textContent = result.error || result.message || 'Failed to add candidate';
       }
     } catch (err) {
       message.style.color = 'red';

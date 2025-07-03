@@ -46,6 +46,10 @@ const userSchema = new mongoose.Schema({
     isVoted: {
         type:Boolean,
         default:false
+    },
+    image: {
+        type: String,
+        default: ''
     }
 });
 
