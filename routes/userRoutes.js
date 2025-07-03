@@ -135,4 +135,50 @@ router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
     }
 });
 
+//User can update profile details (except Aadhar number)
+router.put('/profile', jwtAuthMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { name, age, email, mobile, address } = req.body;
+
+        // Find the user by userID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Validation
+        if (name && name.length < 2) {
+            return res.status(400).json({ error: 'Name must be at least 2 characters' });
+        }
+
+        if (age && age < 18) {
+            return res.status(400).json({ error: 'Age must be at least 18 years' });
+        }
+
+        if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+            return res.status(400).json({ error: 'Invalid email address' });
+        }
+
+        if (mobile && !/^\d{10}$/.test(mobile)) {
+            return res.status(400).json({ error: 'Mobile number must be exactly 10 digits' });
+        }
+
+        // Update user fields (excluding aadharCardNumber and role)
+        if (name) user.name = name;
+        if (age) user.age = age;
+        if (email !== undefined) user.email = email;
+        if (mobile !== undefined) user.mobile = mobile;
+        if (address) user.address = address;
+
+        await user.save();
+
+        console.log('profile updated');
+        res.status(200).json({ message: 'Profile updated successfully', user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;

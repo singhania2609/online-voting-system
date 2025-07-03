@@ -22,16 +22,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('age').textContent = data.user.age;
       document.getElementById('email').textContent = data.user.email || 'N/A';
       document.getElementById('mobile').textContent = data.user.mobile || 'N/A';
+      document.getElementById('address').textContent = data.user.address || 'N/A';
       document.getElementById('role').textContent = data.user.role;
       document.getElementById('isVoted').textContent = data.user.isVoted ? 'Yes' : 'No';
 
+      // Pre-populate update profile form
+      document.getElementById('updateName').value = data.user.name || '';
+      document.getElementById('updateAge').value = data.user.age || '';
+      document.getElementById('updateEmail').value = data.user.email || '';
+      document.getElementById('updateMobile').value = data.user.mobile || '';
+      document.getElementById('updateAddress').value = data.user.address || '';
+
       // Show candidate list for both admin and voter, and add button for admin
       if (data.user.role === 'admin') {
-        // Show add and delete candidate buttons for admin
+        // Show add, update, and delete candidate buttons for admin
         const adminActionsDiv = document.getElementById('adminActions');
         adminActionsDiv.style.display = '';
         adminActionsDiv.innerHTML = `
           <a href="/html/add_candidate.html" class="add-candidate-btn">+ Add Candidate</a>
+          <a href="/html/update_candidate.html" class="update-candidate-btn" style="margin-left:12px;background:#28a745;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">+ Update Candidates</a>
           <a href="/html/delete_candidate.html" class="delete-candidate-btn" style="margin-left:12px;background:#dc3545;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;">+ Delete Candidate</a>
         `;
         document.getElementById('candidateSection').style.display = '';
@@ -66,6 +75,7 @@ async function fetchCandidates(token, isVoted, userRole) {
         div.className = 'candidate';
         // Show name, party, and vote count
         div.innerHTML = `<strong>${candidate.name}</strong> (${candidate.party}) - <span>Votes: ${candidate.voteCount ?? 0}</span>`;
+        
         // Only show the vote button if user is not admin and hasn't voted
         if (userRole !== 'admin' && !isVoted) {
           const voteBtn = document.createElement('button');
@@ -113,6 +123,19 @@ if (showChangePasswordBtn) {
   showChangePasswordBtn.onclick = function() {
     const section = document.getElementById('changePasswordSection');
     section.style.display = section.style.display === 'none' ? '' : 'none';
+    // Hide update profile section when showing password section
+    document.getElementById('updateProfileSection').style.display = 'none';
+  };
+}
+
+// Show/hide update profile form
+const showUpdateProfileBtn = document.getElementById('showUpdateProfileBtn');
+if (showUpdateProfileBtn) {
+  showUpdateProfileBtn.onclick = function() {
+    const section = document.getElementById('updateProfileSection');
+    section.style.display = section.style.display === 'none' ? '' : 'none';
+    // Hide password section when showing profile section
+    document.getElementById('changePasswordSection').style.display = 'none';
   };
 }
 
@@ -149,6 +172,80 @@ if (changePasswordForm) {
       } else {
         message.style.color = 'red';
         message.textContent = data.error || 'Failed to update password.';
+      }
+    } catch (err) {
+      message.style.color = 'red';
+      message.textContent = 'Server error. Please try again.';
+    }
+  });
+}
+
+// Handle profile update form submission
+const updateProfileForm = document.getElementById('updateProfileForm');
+if (updateProfileForm) {
+  updateProfileForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const name = document.getElementById('updateName').value.trim();
+    const age = parseInt(document.getElementById('updateAge').value);
+    const email = document.getElementById('updateEmail').value.trim();
+    const mobile = document.getElementById('updateMobile').value.trim();
+    const address = document.getElementById('updateAddress').value.trim();
+    const message = document.getElementById('updateProfileMessage');
+
+    // Validation
+    if (name.length < 2) {
+      message.style.color = 'red';
+      message.textContent = 'Name must be at least 2 characters.';
+      return;
+    }
+
+    if (age < 18) {
+      message.style.color = 'red';
+      message.textContent = 'Age must be at least 18 years.';
+      return;
+    }
+
+    if (email && !/^\S+@\S+\.\S+$/.test(email)) {
+      message.style.color = 'red';
+      message.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    if (mobile && !/^\d{10}$/.test(mobile)) {
+      message.style.color = 'red';
+      message.textContent = 'Mobile number must be exactly 10 digits.';
+      return;
+    }
+
+    if (!address || address.length < 5) {
+      message.style.color = 'red';
+      message.textContent = 'Address must be at least 5 characters.';
+      return;
+    }
+
+    try {
+      const res = await fetch('/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, age, email, mobile, address })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        message.style.color = 'green';
+        message.textContent = 'Profile updated successfully!';
+        // Update the displayed profile information
+        document.getElementById('name').textContent = name;
+        document.getElementById('age').textContent = age;
+        document.getElementById('email').textContent = email || 'N/A';
+        document.getElementById('mobile').textContent = mobile || 'N/A';
+        document.getElementById('address').textContent = address || 'N/A';
+      } else {
+        message.style.color = 'red';
+        message.textContent = data.error || 'Failed to update profile.';
       }
     } catch (err) {
       message.style.color = 'red';

@@ -177,11 +177,11 @@ router.get('/vote/count',async (req,res)=>{
 });
 
 
-// Get List of all candidates with name, party, _id, and voteCount fields
+// Get List of all candidates with all fields for admin dashboard
 router.get('/',async(req,res)=>{
     try{
         //Find all candidates in the collection
-        const candidates = await Candidate.find({}, 'name party voteCount _id');
+        const candidates = await Candidate.find({}, 'name party voteCount _id age Area_Standing_election address aadharCardNumber email mobile');
 
         //Return the list as response
         res.status(200).json(candidates);

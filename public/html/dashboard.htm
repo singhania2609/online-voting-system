@@ -13,6 +13,7 @@
       <p><strong>Age:</strong> <span id="age"></span></p>
       <p><strong>Email:</strong> <span id="email"></span></p>
       <p><strong>Mobile:</strong> <span id="mobile"></span></p>
+      <p><strong>Address:</strong> <span id="address"></span></p>
       <p><strong>Role:</strong> <span id="role"></span></p>
       <p><strong>Has Voted:</strong> <span id="isVoted"></span></p>
     </div>
@@ -24,6 +25,7 @@
     </div>
     <button onclick="logout()">Logout</button>
     <button id="showChangePasswordBtn" style="margin-left: 12px;">Change Password</button>
+    <button id="showUpdateProfileBtn" style="margin-left: 12px; background-color: #007bff; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">Update Profile</button>
 
     <div id="changePasswordSection" style="display:none; margin-top: 18px;">
       <form id="changePasswordForm">
@@ -31,6 +33,33 @@
         <input type="password" id="newPassword" placeholder="New Password" required />
         <button type="submit">Update Password</button>
         <p id="changePasswordMessage"></p>
+      </form>
+    </div>
+
+    <div id="updateProfileSection" style="display:none; margin-top: 18px;">
+      <form id="updateProfileForm">
+        <div class="form-group">
+          <label for="updateName">Name:</label>
+          <input type="text" id="updateName" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="updateAge">Age:</label>
+          <input type="number" id="updateAge" name="age" min="18" required />
+        </div>
+        <div class="form-group">
+          <label for="updateEmail">Email:</label>
+          <input type="email" id="updateEmail" name="email" />
+        </div>
+        <div class="form-group">
+          <label for="updateMobile">Mobile:</label>
+          <input type="text" id="updateMobile" name="mobile" pattern="[0-9]{10}" maxlength="10" />
+        </div>
+        <div class="form-group">
+          <label for="updateAddress">Address:</label>
+          <textarea id="updateAddress" name="address" required></textarea>
+        </div>
+        <button type="submit">Update Profile</button>
+        <p id="updateProfileMessage"></p>
       </form>
     </div>
     <a href="/html/index.html" class="back-button">⬅️ Back to Home</a>

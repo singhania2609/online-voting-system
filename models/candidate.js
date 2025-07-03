@@ -33,6 +33,10 @@ const candidateSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    address: {
+        type: String,
+        required: true
+    },
     votes: [    //to recode of voter which person votes with timing
         {
             user: {
