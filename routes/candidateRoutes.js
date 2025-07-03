@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User=require('../models/user');
 const Candidate= require('./../models/candidate');
+const multer= require('multer');
+const fs = require('fs');
+const path = require('path');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
 const chechkAdminRole= async(userID)=>{
@@ -17,14 +20,32 @@ const chechkAdminRole= async(userID)=>{
 }
 
 
+// Ensure uploads folder exists
+const uploadPath = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
+
+//Configure multer to store file in memory as buffer
+const storage=multer.memoryStorage();
+
+const upload = multer({ storage });
+
+
 // POST route to add candidate ->only admin add candidate
-router.post('/', jwtAuthMiddleware,async (req, res) =>{
+router.post('/', jwtAuthMiddleware,upload.single('photo'), async (req, res) =>{
     try{
         if(!(await chechkAdminRole(req.user.id)))
             return res.status(403).json({message:'user does not have admin role'});
         
        
         const data = req.body // Assuming the request body contains the candidate data
+
+          // Save uploaded photo filename if provided
+        if (req.file) {
+            data.photo = req.file.buffer.toString('base64');
+        }
+
         if (!data.name) return res.status(400).json({ message: 'Name is required' });
         if (!data.age || data.age < 25) return res.status(400).json({ message: 'Age must be at least 25' });
         if (!data.party) return res.status(400).json({ message: 'Party Name is required' });

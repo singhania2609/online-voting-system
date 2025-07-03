@@ -40,6 +40,9 @@ const userSchema = new mongoose.Schema({
         enum: ['voter','admin'], //only access voter or admin
         default: 'voter'   //by default only voter login
     },
+    photo: {   
+        type:String,  //store based64 encoded data
+    },
     isVoted: {
         type:Boolean,
         default:false

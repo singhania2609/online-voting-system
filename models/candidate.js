@@ -37,6 +37,9 @@ const candidateSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    photo: {   
+        type:String,  //store based64 encoded data
+    },
     votes: [    //to recode of voter which person votes with timing
         {
             user: {

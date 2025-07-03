@@ -1,12 +1,45 @@
 const express = require('express');
 const router = express.Router();
 const User = require('./../models/user');
+const multer= require('multer');
+const fs = require('fs');
+const path = require('path');
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
+
+// Ensure uploads folder exists
+const uploadPath = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
+}
+
+// Set up multer to store files in /uploads folder
+// const storage = multer.Storage({
+//     destination: (req, file, cb) => {
+//         cb(null, uploadPath);
+//     },
+//     filename: (req, file, cb) => {
+//         const suffix = Date.now();
+//         cb(null, suffix + '-' + file.originalname);
+//     }
+// });
+
+//Configure multer to store file in memory as buffer
+const storage=multer.memoryStorage();
+
+const upload = multer({ storage });
+
+
 // POST route to add a person
-router.post('/signup', async (req, res) =>{
+router.post('/signup',upload.single('photo'), async (req, res) =>{
     try{
         const data = req.body // Assuming the request body contains the User data
+
+         // Save uploaded photo filename if provided
+        if (req.file) {
+            data.photo = req.file.buffer.toString('base64');
+        }
+
 
          // Check if there is already an admin user
         if (data.role === 'admin') {

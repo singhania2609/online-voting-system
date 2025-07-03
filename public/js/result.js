@@ -28,3 +28,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     tableBody.innerHTML = '<tr><td colspan="4">Failed to load candidates. Please check if your backend is running and has candidates.</td></tr>';
   }
 });
+
+document.getElementById('userProfileImage').src = user.profileImage || '/default-profile.png';
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+
+  // Optionally, you can add validation here
+
+  const res = await fetch('/user/signup', {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    // Redirect or show success
+    window.location.href = '/html/login.html';
+  } else {
+    alert(data.error || 'Signup failed');
+  }
+});

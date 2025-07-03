@@ -10,7 +10,7 @@
 <body>
 
   <div class="signup-container">
-    <form class="signup-card" id="signupForm">
+    <form class="signup-card" id="signupForm" enctype="multipart/form-data">
       <h2>📝 Signup</h2>
       <p>Create your voter account</p>
 
@@ -27,12 +27,13 @@
         <option value="admin">Admin</option>
       </select>
 
+      <label for="profileImage" style="margin-top:10px;">Profile Image (optional):</label>
+      <input type="file" id="profileImage" name="profileImage" accept="image/*" style="margin-bottom:10px;" />
+
       <button type="submit">Signup</button>
 
       <p class="redirect">Already have an account? <a href="/html/login.html">Login</a></p>
       <a href="/html/index.html" class="back-button">⬅️ Back to Home</a>
-      </div>
-  </div>
     </form>
   </div>
 
