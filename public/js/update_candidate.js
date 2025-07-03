@@ -109,8 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Validation
-        if (formData.age < 18) {
-            messageDiv.textContent = 'Age must be at least 18 years.';
+        if (formData.age < 25) {
+            messageDiv.textContent = 'Age must be at least 25 years.';
             messageDiv.style.color = 'red';
             submitButton.disabled = false;
             submitButton.textContent = 'Update Candidate';

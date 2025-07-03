@@ -26,7 +26,7 @@ router.post('/', jwtAuthMiddleware,async (req, res) =>{
        
         const data = req.body // Assuming the request body contains the candidate data
         if (!data.name) return res.status(400).json({ message: 'Name is required' });
-        if (!data.age || data.age < 18) return res.status(400).json({ message: 'Age must be at least 18' });
+        if (!data.age || data.age < 25) return res.status(400).json({ message: 'Age must be at least 25' });
         if (!data.party) return res.status(400).json({ message: 'Party Name is required' });
         if (!data.Area_Standing_election) return res.status(400).json({ message: 'Area Name is required, where we have standing for election' });
         if (!data.address) return res.status(400).json({ message: 'Address is required' });
@@ -82,7 +82,7 @@ router.put('/:candidateId',jwtAuthMiddleware,async (req, res) => {
             return res.status(403).json({ error: 'candidate not found' });
         }
 
-        console.log('Candidate data updated:', response);
+        console.log('profile updated');
         res.status(200).json(response);
     } catch (err) {
         console.error(err);
