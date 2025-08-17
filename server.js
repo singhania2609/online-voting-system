@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/index.html'));
 });
 
-const PORT = process.env.PORT || 3000 || "https://online-voting-system-b7vs.onrender.com";
+const PORT = process.env.PORT || 3000 ;
 
 
 // Import the router files
