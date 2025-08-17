@@ -13,8 +13,8 @@
     "name": "Rahul Gandhi",
     "party": "INC",
     "age": 51,
-    "Area_Standing_election": "Wayanad",
-    "address": "Wayanad, Kerala",
+    "Area_Standing_election": "Rae Bareli",
+    "address": "Rae Bareli,UP",
     "aadharCardNumber": "234567890123",
     "email": "rahul@inc.in",
     "mobile": "9876543211"

@@ -5,12 +5,11 @@ const db = require('./db');
 require('dotenv').config();
 
 const bodyParser = require('body-parser'); 
-app.use(bodyParser.json()); // req.body
+app.use(bodyParser.json()); 
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve index.html for base route
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/html/index.html'));
 });
@@ -30,9 +29,6 @@ app.use('/uploads', express.static('uploads'));
 
 
 
-
-// Start the server
-//const PORT = 3000;
 app.listen(PORT,()=>{
     console.log('Listening on port 3000');
 }); 
